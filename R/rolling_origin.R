@@ -14,13 +14,13 @@ test <- function(a, b, ...){ return(a +  b)}
 #' This function does something
 #' @param series series used for ...
 #' @param start starting origin for the rolling origin forecast
-#' @param fn forecasting function of the series
+#' @param forecast_fn forecasting function of the series
 #' @param h forecasting horizon. Will evaluate all ... from 1 to h
 #' @keywords rolling origin evaluation
 #' @export
 #' @examples
 #' test(1, 2)
-rolling_origin_forecast <- function(series, start, fn, h=1, ...){
+rolling_origin_forecast <- function(series, start, forecast_fn, h=1, ...){
   time_points <- time(window(series, start=start, end=end(series)))
   forecasts <- NULL
   for (t in head(time_points, -1)){
