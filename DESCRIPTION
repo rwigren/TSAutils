@@ -1,6 +1,6 @@
 Package: TSAutils
 Title: A set of utilities for time series analysis
-Version: 0.1.0.9000
+Version: 0.1.0
 Authors@R: 
     person(given = "Richard",
            family = "Wigren",
@@ -10,8 +10,6 @@ Description: Utilities for evaluation and simulation of time series and time ser
              Examples include rolling origin forecast evaluation and (naive) block-wise bootstrap.
 Imports:
     stats
-Suggests:
-    MASS
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
