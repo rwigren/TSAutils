@@ -35,8 +35,8 @@ rolling_origin_eval <- function(series, start, forecast_fn, h=1, ...){
           round() %>%
           min(h)
 
-    forecasts <- fn(window(series, end = t), h=H, ...) %>%
-      c(rep(NA, h-H), .) %>%
+    forecasts <- forecast_fn(window(series, end = t), h=H, ...) %>%
+      c(., rep(NA, h-H)) %>%
       rbind(forecasts, .)
   }
 
@@ -44,12 +44,105 @@ rolling_origin_eval <- function(series, start, forecast_fn, h=1, ...){
 
   for (i in 1:h){
     forecasts[, i] <-
-      lag(forecasts[, i], k=-i+1) %>% # Shifts forecast to correct row
+      stats::lag(forecasts[, i], k=-i+1) %>% # Shifts forecast to correct row
       window(end = end(series)) %>%   # Cuts off unwanted values
       c(rep(NA, i-1), .)              # Fills non-forecasted entries with NA
   }
   colnames(forecasts) <- paste('h=', 1:h, sep = '')
   errors <- forecasts - series
   colnames(errors) <- colnames(forecasts)
-  return(list(forecasts=forecasts, errors=errors))
+
+  # Create a class
+  rlist <- list(forecasts=forecasts, errors=errors)
+  class(rlist) <- 'ROE_object'
+
+  return(rlist)
 }
+
+#' Root mean squared error for an ROE_object
+#'
+#' Computes the root-mean-squared-error (RMSE) for each forecast horizon
+#'
+#' @param object A rolling origin evaluation object
+#' @example
+#' series <- arima.sim(model=list(ar=c(0.6, -0.4)), n=150)
+#' arma_forecast <- function(x, h) {return(
+#'    forecast(arima(x, order=c(2,0,0)), h=h)$mean
+#' )}
+#' roe.res <- rolling_origin_eval(series, 120, arma_forecast, h=5)
+#' RMSE(roe.res)
+#' @export
+RMSE.ROE_object <- function(object){
+  return(apply(object$errors, 2, RMSE_err))
+}
+
+#' Mean squared error for an ROE_object
+#'
+#' Computes the mean-squared-error (RMSE) for each forecast horizon
+#'
+#' @param object A rolling origin evaluation object
+#' @example
+#' series <- arima.sim(model=list(ar=c(0.6, -0.4)), n=150)
+#' arma_forecast <- function(x, h) {return(
+#'    forecast(arima(x, order=c(2,0,0)), h=h)$mean
+#' )}
+#' roe.res <- rolling_origin_eval(series, 120, arma_forecast, h=5)
+#' MSE(roe.res)
+#' @export
+MSE.ROE_object <- function(object){
+  return(apply(object$errors, 2, MSE_err))
+}
+
+#' Mean average error for an ROE_object
+#'
+#' Computes the mean average error (MAE) for each forecast horizon
+#'
+#' @param object A rolling origin evaluation object
+#' @example
+#' series <- arima.sim(model=list(ar=c(0.6, -0.4)), n=150)
+#' arma_forecast <- function(x, h) {return(
+#'    forecast(arima(x, order=c(2,0,0)), h=h)$mean
+#' )}
+#' roe.res <- rolling_origin_eval(series, 120, arma_forecast, h=5)
+#' MAE(roe.res)
+#' @export
+MAE.ROE_object <- function(object){
+  return(apply(object$errors, 2, MAE_err))
+}
+
+#' Root mean squared error
+#'
+#' Computes the root-mean-squared-error (RMSE) the specified class
+#'
+#' @param object object of class with beloning RMSE function
+#' @export
+RMSE <- function(object, ...){ NextMethod("RMSE", object, ...) }
+
+#' Mean squared error
+#'
+#' Computes the mean squared error (MSE) the specified class
+#'
+#' @param object object of class with beloning MSE function
+#' @export
+MSE <- function(object, ...){ NextMethod("MSE", object, ...) }
+
+#' Mean average error
+#'
+#' Computes the mean average error (MAE) the specified class
+#'
+#' @param object object of class with beloning MAE function
+#' @export
+MAE <- function(object, ...){ NextMethod("MAE", object, ...) }
+
+
+RMSE_err <- function(err){return(sqrt(mean(err^2, na.rm = T)))}
+MSE_err <- function(err){return(mean(err^2, na.rm = T))}
+MAE_err <- function(err){return(mean(abs(err), na.rm=T))}
+
+
+
+
+
+
+
+

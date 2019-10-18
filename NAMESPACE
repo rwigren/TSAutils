@@ -2,6 +2,12 @@
 
 export(ARsieve_BS_sample)
 export(ARsieve_bootstrap)
+export(MAE)
+export(MAE.ROE_object)
+export(MSE)
+export(MSE.ROE_object)
+export(RMSE)
+export(RMSE.ROE_object)
 export(block_BS_sample)
 export(blockwise_bootstrap)
 export(monte_carlo_sim)

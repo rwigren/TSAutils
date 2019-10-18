@@ -9,7 +9,8 @@ Authors@R:
 Description: Utilities for evaluation and simulation of time series and time series models or methods.
              Examples include rolling origin forecast evaluation and (naive) block-wise bootstrap.
 Imports:
-    stats
+    stats,
+    dplyr
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
