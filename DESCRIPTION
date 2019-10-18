@@ -1,6 +1,6 @@
 Package: TSAutils
 Title: A set of utilities for time series analysis
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: 
     person(given = "Richard",
            family = "Wigren",
