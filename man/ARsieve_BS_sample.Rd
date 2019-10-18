@@ -2,19 +2,19 @@
 % Please edit documentation in R/ts_bootstrap.R
 \name{ARsieve_BS_sample}
 \alias{ARsieve_BS_sample}
-\title{Gets a single sample according to the AR-sieve bootstrap scheme. Used in the ARsieve_bootstrap function.}
+\title{AR-sieve sample}
 \usage{
 ARsieve_BS_sample(mean, ar.coef, innov.fn, sim.length)
 }
 \arguments{
-\item{mean}{Mean of the series....}
+\item{mean}{Mean of the series}
 
-\item{ar.coef}{Coefficients of yo mama shit.}
+\item{ar.coef}{Coefficients of the AR process}
 
 \item{sim.length}{Length of the new, sampled series}
 }
 \description{
-Gets a single sample according to the AR-sieve bootstrap scheme. Used in the ARsieve_bootstrap function.
+Gets a single sample according to the AR-sieve bootstrap scheme.
 }
 \examples{
 series <- arima.sim(model=list(ar=c(0.6, -0.4)), n=100)

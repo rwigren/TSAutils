@@ -19,21 +19,31 @@ but can in some cases (such as residual bootstrapping) be useful to be set to an
 
 \item{max.p}{Maximum order the fitted AR model can take.}
 
-\item{ar.method}{Method used to fit the ... ar?forecast}
+\item{ar.method}{Method used to fit the auto-regressive process. ()}
 
 \item{...}{Extra values passed on to the statistic function.}
 }
 \description{
 Bootstrapping method for linear stationary univariate time series. Returns a bootstrap distribution of the chosen statistic.
 }
+\details{
+The implementation follows the AR-sieve bootstrap method as presented by Bühlmann (1997).
+Fits an AR process based on AIC minimization and creates samples based on fitted coefficients
+and empirical residuals. The statistic is then evaluated on these new samples. Can for example
+be used to estimate the variance or confidence intervals of a statistic (e.g. auto-regressive
+coefficients of the series).
+}
 \examples{
 series <- arima.sim(model=list(ar=c(0.6, -0.4)), n=100)
-ars.res <- ARsieve_bootstrap(series, arma_coef_stat, B=500)
+ars.res <- ARsieve_bootstrap(series, mean, B=500)
 boxplot(ars.res)
 }
 \references{
 Bühlmann, Peter (1997) "Sieve bootstrap for time series".
 \emph{Bernoulli}, \bold{3}(2), 123--148.
+}
+\seealso{
+\code{\link{blockwise_bootstrap}}, \code{\link{stats::ar}}
 }
 \keyword{AR-sieve}
 \keyword{ARsieve}

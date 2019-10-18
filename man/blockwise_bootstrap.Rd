@@ -29,21 +29,25 @@ Procedure for evaluating a statistic on a stationary time series.
 \details{
 Returns a bootstrap distribution of the chosen statistic.
 
-The block-wise bootstrap method as presented by Küncsh (1989). Resamples blocks of the time series
-and uses these to create new time series, which the statistic is evaluated on. Can for example be used to
-estimate the variance or confidence intervals of a statistic (e.g. mean of the series).
+The implementation follows the block-wise bootstrap method as presented by Künsch (1989).
+Resamples blocks of the time series and uses these to create new time series, which the
+statistic is evaluated on. Can for example be used to estimate the variance or confidence
+intervals of a statistic (e.g. mean of the series).
 
 Note that the implemented method is not the 'block of blocks'-bootstrap but the more general
 'naive' block-wise bootstrap method.
 }
 \examples{
 series <- arima.sim(model=list(ar=c(0.6, -0.4)), n=100)
-bw.res <- blockwise_bootstrap(series, arma_coef_stat, B=500, l=5)
+bw.res <- blockwise_bootstrap(series, mean, B=500, l=5)
 boxplot(bw.res)
 }
 \references{
 Kunsch, Hans R. (1989) "The Jackknife and the Bootstrap for General Stationary Observations".
 \emph{The Annals of Statistics}, \bold{17}(3), 1217--1241.
+}
+\seealso{
+\code{\link{ARsieve_bootstrap}}
 }
 \keyword{block}
 \keyword{blockwise}

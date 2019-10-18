@@ -31,7 +31,11 @@ The method starts with a subset X[1:t] and forecasts X[(t+1):(t+h)] based on thi
 Then forecasts X[(t+2):(t+h+1)] based on X[1:(t+1)] and so on.
 }
 \examples{
-test(1, 2)
+series <- arima.sim(model=list(ar=c(0.6, -0.4)), n=150)
+arma_forecast <- function(x, h) {return(
+   forecast(arima(x, order=c(2,0,0)), h=h)$mean
+)}
+roe.res <- rolling_origin_eval(series, 120, arma_forecast, h=5)
 }
 \references{
 Hyndman, R.J., & Athanasopoulos, G. (2018)

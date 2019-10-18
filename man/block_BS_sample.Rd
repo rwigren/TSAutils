@@ -2,7 +2,7 @@
 % Please edit documentation in R/ts_bootstrap.R
 \name{block_BS_sample}
 \alias{block_BS_sample}
-\title{Gets a single sample according to the block-wise bootstrap scheme. Used in the blockwise_bootstrap function.}
+\title{Block-wise bootstrap sample}
 \usage{
 block_BS_sample(series, l, sim.length = NROW(series))
 }
