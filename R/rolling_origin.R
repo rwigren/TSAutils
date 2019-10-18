@@ -1,26 +1,33 @@
-#' A test function
+#' Rolling origin forecast evaluation
 #'
-#' This function allows you to express your love of cats.
-#' @param a integer wallah
-#' @param b integer brah
-#' @keywords add
-#' @export
-#' @examples
-#' test(1, 2)
-test <- function(a, b, ...){ return(a +  b)}
-
-#' Rolling origin forecast evaluation, a.k.a. time-series cross validation.
+#' Rolling origin forecast evaluation, a.k.a. time-series cross validation, of a model or method.
+#' Computes errors and prediction of a forecast function applied to a time series according to the rolling origin scheme.
 #'
-#' This function does something
-#' @param series series used for ...
-#' @param start starting origin for the rolling origin forecast
-#' @param forecast_fn forecasting function of the series
-#' @param h forecasting horizon. Will evaluate all ... from 1 to h
+#' This method implements the rolling origin forecast evaluation (see e.g. Hyndman and Athanasopoulos, 2018).
+#' Returns a list of two matrices (multivariate time series), one containing the errors and one the predictions,
+#' where columns represent forecast horizon and rows represent time points.
+#'
+#' The method starts with a subset X[1:t] and forecasts X[(t+1):(t+h)] based on this subset.
+#' Then forecasts X[(t+2):(t+h+1)] based on X[1:(t+1)] and so on.
+#'
+#' @param series Univariate time series used for fitting and computing forecast errors.
+#' @param start Time point used as the starting point for the rolling origin forecast.
+#' @param forecast_fn Function which returns forecasts. Takes a time series as its first argument and has an argument
+#' h representing the forecast horizon. Returns a vector of length equal to the given forecast horizon h.
+#' @param h Forecast horizon. This function will evaluate all horizons 1 to h.
+#' @param ... Additional arguments passed to forecast_fn
 #' @keywords rolling origin evaluation
-#' @export
 #' @examples
-#' test(1, 2)
-rolling_origin_forecast <- function(series, start, forecast_fn, h=1, ...){
+#' series <- arima.sim(model=list(ar=c(0.6, -0.4)), n=150)
+#' arma_forecast <- function(x, h) {return(
+#'    forecast(arima(x, order=c(2,0,0)), h=h)$mean
+#' )}
+#' roe.res <- rolling_origin_eval(series, 120, arma_forecast, h=5)
+#' @references Hyndman, R.J., & Athanasopoulos, G. (2018)
+#' \emph{Forecasting: principles and practice, 2nd edition}, OTexts: Melbourne, Australia.
+#' OTexts.com/fpp2. Accessed on 2019-10-18
+#' @export
+rolling_origin_eval <- function(series, start, forecast_fn, h=1, ...){
   time_points <- time(window(series, start=start, end=end(series)))
   forecasts <- NULL
   for (t in head(time_points, -1)){

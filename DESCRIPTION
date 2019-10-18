@@ -1,13 +1,19 @@
 Package: TSAutils
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: A set of utilities for time series analysis
+Version: 0.1.0.9000
 Authors@R: 
     person(given = "Richard",
            family = "Wigren",
            role = c("aut", "cre"),
            email = "richard.wigren@gmail.com")
-Description: What the package does (one paragraph).
-License: What license it uses
+Description: Utilities for evaluation and simulation of time series and time series models or methods.
+             Examples include rolling origin forecast evaluation and (naive) block-wise bootstrap.
+Imports:
+    stats
+Suggests:
+    MASS
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
+
